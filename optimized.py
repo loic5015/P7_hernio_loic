@@ -2,7 +2,6 @@ import time
 import csv
 import re
 import sys
-from itertools import combinations
 
 
 class Action:
@@ -36,14 +35,14 @@ class Controller:
                     try:
                         cost = int(row[1])
                     except ValueError:
-                        self.view.injection_file_error(line,"le cout n'est pas un entier")
+                        self.view.injection_file_error(line, "le cout n'est pas un entier")
                         test_1 = False
                     else:
                         test_1 = True
                     try:
                         rate = int(re.findall('\d+',row[2])[0])
                     except ValueError:
-                        self.view.injection_file_error(line,"le benefice n'est pas un entier")
+                        self.view.injection_file_error(line, "le benefice n'est pas un entier")
                         test_2 = False
                     else:
                         test_2 = True
@@ -54,45 +53,40 @@ class Controller:
                 line += 1
         return liste_action
 
+    def sort_action(self, list_action: list) -> list:
+        """sort collection action"""
+        n = 0
+        list_temp = list_action.copy()
+        list_sort = []
+        while n < len(list_action):
+            benefit_max = 0
+            action_save = None
+            for action in list_temp:
+                if action.benefit > benefit_max:
+                    benefit_max = action.benefit
+                    action_save = action
+            list_temp.remove(action_save)
+            list_sort.append(action_save)
+            n += 1
+        return list_sort
 
-    def number_list(self, list_action : list):
-        """explore toutes les permutations"""
-        max_benefit = 0
-        best_list = ""
-        for longueur in range(len(list_action)+1):
-            comb = combinations(list_action, longueur)
-            liste_500 = []
-            for list_index in comb:
-                liste_500.append(self.choice_action(list_index))
-
-            for list_cost in liste_500:
-                somme = 0
-                for action in list_cost:
-                    somme = action.benefit + somme
-                if somme > max_benefit:
-                    max_benefit = somme
-                    best_list = list_cost
-        return best_list
-
-
-
-
-    def choice_action(self,list_sorted):
+    def choice_action(self, list_sorted: list)->list:
         """choice the action budget = 500"""
         budget = 500
         list_choice = []
-        for action in list_sorted:
-            if budget // action.cost >= 1:
-                budget = budget - action.cost
-                list_choice.append(action)
+        for index in range(len(list_sorted)):
+            if budget // list_sorted[index].cost >= 1 :
+                budget = budget - list_sorted[index].cost
+                list_choice.append(list_sorted[index])
         return list_choice
 
     def run(self, file):
         """launch the program"""
         start = time.time()
         list_action = self.import_csv(file)
-        list_sorted = self.number_list(list_action)
-        self.view.display_list(list_sorted)
+        list_sorted = self.sort_action(list_action)
+        list_choice = self.choice_action(list_sorted)
+        self.view.display_list(list_choice)
         end = time.time()
         duration = end - start
         self.view.display_time(duration)
@@ -113,9 +107,9 @@ class View:
         print(f"duree du script : {duration :10}")
 
 
-def main(str_param: str):
+def main(strParam):
     gestion = Controller()
-    gestion.run(str_param)
+    gestion.run(strParam)
 
 
 if __name__ == '__main__':
