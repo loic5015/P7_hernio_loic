@@ -22,6 +22,7 @@ class Action:
     def calculate_yield(self):
         return self.benefit/self.cost
 
+
 class Controller:
 
     def __init__(self):
@@ -29,7 +30,7 @@ class Controller:
 
     def import_csv(self, file: str) -> list:
         """import the file in csv"""
-        liste_action = []
+        list_action = []
         with open(file, newline='') as csvfile:
             spam = csv.reader(csvfile, delimiter=";")
             line = 0
@@ -52,9 +53,9 @@ class Controller:
 
                     if test_1 and test_2:
                         action = Action({"name": row[0], "cost": cost, "rate": rate})
-                        liste_action.append(action)
+                        list_action.append(action)
                 line += 1
-        return liste_action
+        return list_action
 
     def sort_action(self, list_action: list) -> list:
         """sort collection action"""
