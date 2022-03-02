@@ -37,14 +37,14 @@ class Controller:
                     try:
                         cost = int(row[1])
                     except ValueError:
-                        self.view.injection_file_error(line,"le cout n'est pas un entier")
+                        self.view.injection_file_error(line, "le cout n'est pas un entier")
                         test_1 = False
                     else:
                         test_1 = True
                     try:
-                        rate = int(re.findall('\d+',row[2])[0])
+                        rate = int(re.findall("\\d+", row[2])[0])
                     except ValueError:
-                        self.view.injection_file_error(line,"le benefice n'est pas un entier")
+                        self.view.injection_file_error(line, "le benefice n'est pas un entier")
                         test_2 = False
                     else:
                         test_2 = True
@@ -55,8 +55,7 @@ class Controller:
                 line += 1
         return liste_action
 
-
-    def number_list(self, list_action : list):
+    def number_list(self, list_action: list) -> list:
         """explore toutes les combinaisons possibles"""
         max_benefit = 0
         best_list = ""
@@ -75,10 +74,7 @@ class Controller:
                     best_list = list_cost
         return best_list
 
-
-
-
-    def choice_action(self,list_sorted):
+    def choice_action(self, list_sorted: list) -> list:
         """choice the action budget = 500"""
         budget = 500
         list_choice = []
@@ -88,7 +84,7 @@ class Controller:
                 list_choice.append(action)
         return list_choice
 
-    def run(self, file):
+    def run(self, file: str):
         """launch the program"""
         start = time.time()
         tracemalloc.start()
@@ -122,6 +118,7 @@ class View:
     def display_time(self, duration: float, memory: tuple):
         print(f"duree du script : {duration :10}")
         print(f"memory crete  : {memory[1] :10}")
+
 
 def main(str_param: str):
     gestion = Controller()

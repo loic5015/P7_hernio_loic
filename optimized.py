@@ -45,7 +45,7 @@ class Controller:
                     else:
                         test_1 = True
                     try:
-                        rate = int(re.findall('\d+',row[2])[0])
+                        rate = int(re.findall('\\d+', row[2])[0])
                     except ValueError:
                         self.view.injection_file_error(line, "le benefice n'est pas un entier")
                         test_2 = False
@@ -75,7 +75,7 @@ class Controller:
             n += 1
         return list_sort
 
-    def choice_action(self, list_sorted: list)->list:
+    def choice_action(self, list_sorted: list) -> list:
         """choice the action budget = 500"""
         total_benefit_max = 0
         best_list = None
