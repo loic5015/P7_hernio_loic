@@ -2,6 +2,7 @@ import time
 import csv
 import re
 import sys
+import tracemalloc
 
 
 class Action:
@@ -103,13 +104,15 @@ class Controller:
     def run(self, file):
         """launch the program"""
         start = time.time()
+        tracemalloc.start()
         list_action = self.import_csv(file)
         list_sorted = self.sort_action(list_action)
         list_choice = self.choice_action(list_sorted)
         self.view.display_list(list_choice)
         end = time.time()
         duration = end - start
-        self.view.display_time(duration)
+        self.view.display_time(duration, tracemalloc.get_traced_memory())
+        tracemalloc.stop()
 
 
 class View:
@@ -130,9 +133,9 @@ class View:
             total_benefit += row.benefit
         print(f"cout total: {total_cost :5} total benefice: {total_benefit :5} nb_action: {line :2}")
 
-
-    def display_time(self,duration):
+    def display_time(self, duration: float, memory: tuple):
         print(f"duree du script : {duration :10}")
+        print(f"memory crete  : {memory[1] :10}")
 
 
 def main(str_param: str):
