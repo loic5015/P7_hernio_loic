@@ -56,10 +56,10 @@ class Controller:
 
 
     def number_list(self, list_action : list):
-        """explore toutes les permutations"""
+        """explore toutes les combinaisons possibles"""
         max_benefit = 0
         best_list = ""
-        for longueur in range(len(list_action)+1):
+        for longueur in range(1, len(list_action)+1):
             comb = combinations(list_action, longueur)
             liste_500 = []
             for list_index in comb:
@@ -106,10 +106,17 @@ class View:
 
     def display_list(self, data: list):
         """display a list"""
+        line = 0
+        total_cost = 0
+        total_benefit = 0
         for row in data:
             print(f"{row.name :10} {row.cost :4} {row.rate :4} {row.benefit :6}")
+            line += 1
+            total_cost += row.cost
+            total_benefit += row.benefit
+        print(f"cout total: {total_cost :5} total benefice: {total_benefit :5.5} nb_action: {line :2}")
 
-    def display_time(self,duration):
+    def display_time(self, duration: float):
         print(f"duree du script : {duration :10}")
 
 
