@@ -2,3 +2,4 @@ test.csv
 venv/
 .idea/
 analyse*
+data*
