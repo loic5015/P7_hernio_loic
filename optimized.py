@@ -43,7 +43,7 @@ class Controller:
         return list_action
 
     def knap_sack(self, list_sorted: list):
-        """mis en place sac a dos dynamique"""
+        """mis en place sac du dos dynamique"""
         budget = 500*100
         n = len(list_sorted)
         list_cost = [action.cost for action in list_sorted]
@@ -56,7 +56,7 @@ class Controller:
                 elif list_cost[i - 1] <= w:
                     # test si cout de l'action inferieur a budget itere de 0 a 50000
                     """prend le max entre le benefice de l'action avec l'ajout du benefice de l'action issue de
-                     la difference du budget total - cout action et le benefice de la matrice pour le budget donnee"""
+                     la difference du budget itere - cout action et le benefice de la matrice pour le budget donnee"""
                     matrice[i][w] = max(list_benefit[i - 1] + matrice[i - 1][w - list_cost[i - 1]], matrice[i - 1][w])
                 else:
                     matrice[i][w] = matrice[i - 1][w]
