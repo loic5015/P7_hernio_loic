@@ -24,7 +24,7 @@ class Controller:
         self.view = View()
 
     def import_csv(self, file: str) -> list:
-        """import the file in csv"""
+        """import the file with pandas"""
         list_action = []
         df = pd.read_csv(file)
         df.drop_duplicates(inplace=True)
@@ -43,27 +43,31 @@ class Controller:
         return list_action
 
     def knap_sack(self, list_sorted: list):
+        """mis en place sac a dos dynamique"""
         budget = 500*100
         n = len(list_sorted)
         list_cost = [action.cost for action in list_sorted]
         list_benefit = [action.benefit for action in list_sorted]
-        K = [[0 for x in range(budget + 1)] for x in range(n + 1)]
+        matrice = [[0 for x in range(budget + 1)] for x in range(n + 1)]
         for i in range(n + 1):
             for w in range(budget + 1):
                 if i == 0 or w == 0:
-                    K[i][w] = 0
+                    matrice[i][w] = 0
                 elif list_cost[i - 1] <= w:
-                    K[i][w] = max(list_benefit[i - 1] + K[i - 1][w - list_cost[i - 1]], K[i - 1][w])
+                    # test si cout de l'action inferieur a budget itere de 0 a 50000
+                    """prend le max entre le benefice de l'action avec l'ajout du benefice de l'action issue de
+                     la difference du budget total - cout action et le benefice de la matrice pour le budget donnee"""
+                    matrice[i][w] = max(list_benefit[i - 1] + matrice[i - 1][w - list_cost[i - 1]], matrice[i - 1][w])
                 else:
-                    K[i][w] = K[i - 1][w]
+                    matrice[i][w] = matrice[i - 1][w]
 
-        total_benefice = K[n][budget]
+        total_benefice = matrice[n][budget]
         budget = 500 * 100
         n = len(list_sorted)
         list_action = []
         while budget >= 0 and n >= 0:
             action = list_sorted[n-1]
-            if K[n][budget] == K[n - 1][budget-action.cost] + action.benefit:
+            if matrice[n][budget] == matrice[n - 1][budget-action.cost] + action.benefit:
                 list_action.append(action)
                 budget -= action.cost
             n -= 1

@@ -30,7 +30,7 @@ class Controller:
         """import the file in csv"""
         liste_action = []
         with open(file, newline='') as csvfile:
-            spam = csv.reader(csvfile, delimiter=";")
+            spam = csv.reader(csvfile, delimiter=",")
             line = 0
             for row in spam:
                 if line > 0:
