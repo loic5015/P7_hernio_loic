@@ -91,7 +91,6 @@ class View:
         """display a list"""
         line = 0
         total_cost = 0
-        total_benefit = 0
         for row in data:
             print(f"{row.name :10} {row.cost/100 :4} {row.rate :4} {row.benefit/100 :6}")
             line += 1
